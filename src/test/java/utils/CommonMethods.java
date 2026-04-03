@@ -48,10 +48,6 @@ public class CommonMethods extends PageInitializer{
         initializePageObjects();
     }
 
-    private void initializePageObjects() {
-
-    }
-
     public void closeBrowser() {
         if(driver!= null) {
             driver.quit();
@@ -128,4 +124,3 @@ public class CommonMethods extends PageInitializer{
 
 
 }
-
