@@ -55,6 +55,11 @@ public class CommonMethods extends PageInitializer{
     }
 
     public void sendText(String text, WebElement element){
+        element.click();
+
+
+        element.sendKeys(keys.CONTROL +"a");
+      element.sendKeys(keys.DELETE);
         element.clear();
         element.sendKeys(text);
     }
