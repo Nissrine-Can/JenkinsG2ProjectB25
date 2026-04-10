@@ -7,7 +7,7 @@ Feature: Update Employee Contact Details
   Background:
     Given the employee is logged into the HRMS application using valid ESS user credentials
     And the employee navigates to the "My Info" and "Contact Details" section
-  @test
+  @test @dbTesting
   Scenario: View contact details form
     Then the employee should see editable fields for contact information:
       | Field Name        | Field Type |
@@ -22,10 +22,10 @@ Feature: Update Employee Contact Details
       | Work Phone        | Textbox    |
       | Work Email        | Textbox    |
       | Other Email       | Textbox    |
-  @contact
+  @contact @dbTesting
   Scenario: Successfully update contact details
     When the employee updates the following contact details:
-      | Street 1         | 272            |
+      | Street 1         | 272           |
       | Street 2         | SteepleChase dr|
       | City             | Exton          |
       | State            | PA             |
@@ -39,12 +39,12 @@ Feature: Update Employee Contact Details
     And clicks on the "Save" button
     Then a success message should be displayed
 
-  @invalidPhone
+  @invalidPhone @dbTesting
   Scenario: Validate Phone number format
     When the employee enters an invalid phone number in "Home" or "Mobile" or "Work"
     Then the system should display an phone number validation error
 
-  @invalidEmail
+  @invalidEmail @dbTesting
   Scenario: Validate email format
     When the employee enters an invalid email format in "Work Email" or "Other Email"
     And clicks on the "Save" button

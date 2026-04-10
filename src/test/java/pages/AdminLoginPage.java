@@ -5,7 +5,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utils.CommonMethods;
 
-public class LoginPage extends CommonMethods {
+public class AdminLoginPage extends CommonMethods {
 
     @FindBy(xpath = "//*[@name='username']")
     public WebElement usernameField;
@@ -19,7 +19,7 @@ public class LoginPage extends CommonMethods {
     @FindBy(xpath = "//*[text()='Invalid credentials']")
     public WebElement errorMessageLoc;
 
-    public LoginPage(){
+    public AdminLoginPage(){
         PageFactory.initElements(driver,this);
     }
 }

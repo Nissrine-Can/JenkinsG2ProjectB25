@@ -9,11 +9,7 @@ import org.openqa.selenium.WebElement;
 import utils.CommonMethods;
 import utils.ConfigReader;
 
-import static utils.CommonMethods.driver;
-import static utils.PageInitializer.dashboardPage;
-import static utils.PageInitializer.loginPage;
-
-public class LoginSteps extends CommonMethods {
+public class AdminLoginSteps extends CommonMethods {
 
     @Given("user is able to access HRMS application")
     public void user_is_able_to_access_hrms_application() {

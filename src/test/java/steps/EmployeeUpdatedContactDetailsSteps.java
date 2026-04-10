@@ -1,8 +1,10 @@
 package steps;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -50,7 +52,7 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
     }
 
     @Then("the employee should see editable fields for contact information:")
-    public void the_employee_should_see_editable_fields_for_contact_information(io.cucumber.datatable.DataTable dataTable) {
+    public void the_employee_should_see_editable_fields_for_contact_information(DataTable dataTable) {
 
         Assert.assertTrue(contactDetailsPage.cityField.isDisplayed());
         Assert.assertTrue(contactDetailsPage.stateField.isDisplayed());
@@ -64,7 +66,7 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
     }
 
     @When("the employee updates the following contact details:")
-    public void the_employee_updates_the_following_contact_details(io.cucumber.datatable.DataTable dataTable) throws InterruptedException {
+    public void the_employee_updates_the_following_contact_details(DataTable dataTable) throws InterruptedException {
         var data = dataTable.asMap();
         Thread.sleep(2000);
         sendText((data.get("Street 1")), contactDetailsPage.street1Field);
@@ -116,10 +118,18 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
     }
 
     @Then("a success message should be displayed")
-    public void a_success_message_should_be_displayed() {
+    public void a_success_message_should_be_displayed() throws InterruptedException {
         System.out.println("Success message displayed");
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".oxd-toast-container")));
+        WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".oxd-toast-container")) );
+       String message = toast.getText();
+       System.out.println("Toast message: " + message);
+
+        Assert.assertTrue(message.contains("Success"));
+
+
+
         //driver.findElement(By.cssSelector(".oxd-toast-container"));
         String actualMessage = toast.getText();
         // String expectedMessage = "Success\nSuccessfully Updated\n";

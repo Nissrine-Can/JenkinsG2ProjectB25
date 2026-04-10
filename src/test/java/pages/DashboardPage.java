@@ -20,6 +20,12 @@ public class DashboardPage extends CommonMethods {
     @FindBy(xpath="//*[@class='oxd-userdropdown-tab']")
     public WebElement welcomeScreenLoc;
 
+    @FindBy(xpath = "//*[text()='My Info']")
+    public WebElement myInfoField;
+
+    @FindBy(xpath = "//*[text()='Contact Details']")
+    public WebElement contactDetailsField;
+
     public DashboardPage(){
         PageFactory.initElements(driver, this);
     }

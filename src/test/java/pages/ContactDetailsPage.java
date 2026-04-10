@@ -58,7 +58,7 @@ public class ContactDetailsPage extends CommonMethods {
     public WebElement phoneErr2 ;
 
     @FindBy(xpath = "//*[text()='Expected format: admin@example.com']")
-    public WebElement emailErrorMsg ;
+    public static WebElement emailErrorMsg ;
 
     public ContactDetailsPage(){
         PageFactory.initElements(driver,this);
