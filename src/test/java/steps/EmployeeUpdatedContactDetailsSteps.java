@@ -121,8 +121,10 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
     public void a_success_message_should_be_displayed() throws InterruptedException {
         System.out.println("Success message displayed");
 
+        Thread.sleep(1000);
+
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".oxd-toast-container")) );
+        WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class,'oxd-toast')]")) );
        String message = toast.getText();
        System.out.println("Toast message: " + message);
 
@@ -168,11 +170,12 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
     }
 
     @Then("the previously updated contact details should be displayed")
-    public void the_previously_updated_contact_details_should_be_displayed() {
+    public void the_previously_updated_contact_details_should_be_displayed() throws InterruptedException {
         //  Assert.assertEquals("UpdatedCity", contactDetailsPage.getCity());
         System.out.println("the previously updated contact details should be displayed");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
+        //Thread.sleep(1000);
         Assert.assertEquals("272",contactDetailsPage.street1Field.getAttribute("value"));
         Assert.assertEquals("SteepleChase dr",contactDetailsPage.street2Field.getAttribute("value"));
         Assert.assertEquals("Exton",contactDetailsPage.cityField.getAttribute("value"));
@@ -181,6 +184,7 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
         String oldText = contactDetailsPage.countryDField.getText();
         System.out.println(oldText);
         wait.until(ExpectedConditions.textToBePresentInElement(contactDetailsPage.countryDField, oldText));
+
         String newText = contactDetailsPage.countryDField.getText();
         Assert.assertNotEquals(oldText, "Dropdown text did not change", newText);
         // Assert.assertEquals("United States",contactDetailsPage.homeTField.getText());
@@ -226,10 +230,11 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
     }
 
     @Then("the system should display an email format validation error")
-    public void the_system_should_display_an_email_format_validation_error() {
+    public void the_system_should_display_an_email_format_validation_error() throws InterruptedException {
         // WebElement emailErrorMsg = driver.findElement(By.xpath("//*[text()='Expected format: admin@example.com']"));
         String emailErrText = ContactDetailsPage.emailErrorMsg.getText();
         // Assert.assertTrue(emailErrText.contains("@"));
+        Thread.sleep(1000);
         Assert.assertEquals("Expected format: admin@example.com",emailErrText);
         // Assert.assertTrue("Expected format: admin@example.com",contactDetailsPage.emailErrorMsg.isDisplayed());
     }
@@ -242,7 +247,8 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
     }
 
     @Then("the system should display an phone number validation error")
-    public void the_system_should_display_an_phone_number_validation_error() {
+    public void the_system_should_display_an_phone_number_validation_error() throws InterruptedException {
+        Thread.sleep(1000);
         // WebElement phoneErMsg= driver.findElement(By.xpath("//span[text()='Allows numbers and only + - / ( )']"));
         String phoneErrText = contactDetailsPage.phoneErMsg.getText();
         Assert.assertEquals("Allows numbers and only + - / ( )",phoneErrText);

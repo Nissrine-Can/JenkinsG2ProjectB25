@@ -55,12 +55,13 @@ public class CommonMethods extends PageInitializer{
     }
 
     public void sendText(String text, WebElement element){
+
+
         element.click();
 
-
-        element.sendKeys(keys.CONTROL +"a");
-      element.sendKeys(keys.DELETE);
-        element.clear();
+        element.sendKeys(Keys.CONTROL +"a");
+        element.sendKeys(Keys.DELETE);
+        //element.clear();
         element.sendKeys(text);
     }
 
@@ -76,6 +77,8 @@ public class CommonMethods extends PageInitializer{
         Select sel =new Select(dropDown);
         sel.selectByIndex(index);
     }
+
+
 
     public WebDriverWait getwait(){
         WebDriverWait wait= new WebDriverWait(driver, Duration.ofSeconds(Constants.EXPLICIT_WAIT));
