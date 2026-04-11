@@ -1,6 +1,7 @@
 package steps;
 
 import io.cucumber.java.PendingException;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
@@ -8,11 +9,14 @@ import org.openqa.selenium.WebElement;
 import pages.AddEmployeePage;
 import pages.DashboardPage;
 import utils.CommonMethods;
+import utils.DBUtils;
 import utils.ExcelReader;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+
 
 public class AddEmployeeSteps extends CommonMethods {
 
@@ -130,6 +134,22 @@ public class AddEmployeeSteps extends CommonMethods {
             click(dashboardPage.addEmpOption);
             Thread.sleep(2000);
         }
+    }
+
+    @And("employee {string} and {string} is present in the database")
+    public void employee_is_present_in_the_database(String firstName, String lastName) {
+
+        String query = "SELECT * FROM hs_hr_employee WHERE emp_firstname='" + firstName +
+                "' AND emp_lastname='" + lastName + "'";
+
+        List<Map<String, String>> data = DBUtils.fetch(query);
+
+        if (data.isEmpty()) {
+            throw new AssertionError("Employee was not found in the database");
+        }
+
+        System.out.println("Employee found in database");
+
     }
 
 

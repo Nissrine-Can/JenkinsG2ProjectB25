@@ -15,6 +15,7 @@ public class DBUtils {
         String dburl = ConfigReader.read("dbURL");
         String userName = ConfigReader.read("dbUserName");
         String password = ConfigReader.read("dbPassword");
+        
 
         List<Map<String,String>> mapList = new ArrayList<>();
 
@@ -39,4 +40,6 @@ public class DBUtils {
         }
         return mapList;
     }
+
+
 }

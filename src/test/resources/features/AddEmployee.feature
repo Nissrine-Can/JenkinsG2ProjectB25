@@ -19,11 +19,16 @@ Feature: Add employee scenarios
     And user clicks on save button
     Then user is able to see employee added successfully
 
-  @param
+  @param @db @regression
   Scenario: Adding employee using parameters
     When user enters employee "Nissrine" and "Canina" values
     And user clicks on save button
     Then user is able to see employee added successfully
+    And employee "John" and "Doe" is present in the database
+
+
+
+
 
   @examples @regression
   Scenario Outline:  Adding multiple employees

@@ -104,7 +104,7 @@ public class CommonMethods extends PageInitializer{
     }
 
 
-    public byte[] takeScreenshot(String fileName){
+    public static byte[] takeScreenshot(String fileName){
         //it accepts array of byte in cucumber for the screenshot
         TakesScreenshot ts = (TakesScreenshot) driver;
         byte[] picByte = ts.getScreenshotAs(OutputType.BYTES);
@@ -121,13 +121,18 @@ public class CommonMethods extends PageInitializer{
         return picByte;
     }
 
-    public String getTimeStamp(String pattern){
+    public static String getTimeStamp(String pattern){
         //this method will return the timestamp which we will add in ss method
         Date date = new Date();
 
         //yyyy-mm-dd-hh-mm-ss
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         return sdf.format(date);
+    }
+
+    public static WebDriver getDriver()
+    {
+        return driver;
     }
 
 
