@@ -8,6 +8,7 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import pages.AdminLoginPage;
 import utils.CommonMethods;
 import utils.ConfigReader;
 import utils.DBUtils;
@@ -33,8 +34,8 @@ public class AdminLoginSteps extends CommonMethods {
         //   usernameField.sendKeys(ConfigReader.read("userName"));
         //   passwordField.sendKeys(ConfigReader.read("password"));
 
-        sendText(ConfigReader.read("userName"),loginPage.usernameField);
-        sendText(ConfigReader.read("password"), loginPage.passwordField);
+        sendText(ConfigReader.read("userName"),AdminLoginPage.usernameField);
+        sendText(ConfigReader.read("password"), AdminLoginPage.passwordField);
     }
 
     @When("user clicks on login button")
@@ -62,14 +63,14 @@ public class AdminLoginSteps extends CommonMethods {
         // usernameField.sendKeys("hrm_user3245");
         //    passwordField.sendKeys("Hrm_user@1232334");
 
-        sendText("test",loginPage.usernameField);
-        sendText("testtest", loginPage.passwordField);
+        sendText("test", AdminLoginPage.usernameField);
+        sendText("testtest", AdminLoginPage.passwordField);
     }
 
     @Then("user is able to see error message")
     public void user_is_able_to_see_error_message() {
         //using assertion to verify that the error message is displayed and correct
-        String actualText =  loginPage.errorMessageLoc.getText();
+        String actualText =  AdminLoginPage.errorMessageLoc.getText();
         Assert.assertEquals("Invalid credentials", actualText);
         System.out.println("error message appeared");
     }

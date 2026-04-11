@@ -24,7 +24,7 @@ Feature: Add employee scenarios
     When user enters employee "Nissrine" and "Canina" values
     And user clicks on save button
     Then user is able to see employee added successfully
-    And employee "John" and "Doe" is present in the database
+    And employee "Nissrine" and "Canina" is present in the database
 
 
 

@@ -8,16 +8,16 @@ import utils.CommonMethods;
 public class AdminLoginPage extends CommonMethods {
 
     @FindBy(xpath = "//*[@name='username']")
-    public WebElement usernameField;
+    public static WebElement usernameField;
 
     @FindBy(xpath = "//*[@name='password']")
-    public WebElement passwordField;
+    public static WebElement passwordField;
 
     @FindBy(xpath = "//*[@type='submit']")
     public WebElement loginButton;
 
     @FindBy(xpath = "//*[text()='Invalid credentials']")
-    public WebElement errorMessageLoc;
+    public static WebElement errorMessageLoc;
 
     public AdminLoginPage(){
         PageFactory.initElements(driver,this);

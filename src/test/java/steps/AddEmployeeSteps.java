@@ -40,9 +40,9 @@ public class AddEmployeeSteps extends CommonMethods {
     public void user_enters_employee_first_name_and_last_name() {
         // WebElement firstNameloc = driver.findElement(By.xpath("//*[@name='firstName']"));
         sendText("Nissrine", addEmployeePage.firstNameloc);
-        // firstNameloc.sendKeys("sofia");
+        // firstNameloc.sendKeys("Nissrine");
         //  WebElement lastNameloc = driver.findElement(By.xpath("//*[@name='lastName']"));
-        //  lastNameloc.sendKeys("rozhko");
+        //  lastNameloc.sendKeys("Canina");
         sendText("Canina", addEmployeePage.lastNameloc);
     }
 
