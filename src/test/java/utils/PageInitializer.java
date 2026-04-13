@@ -1,9 +1,6 @@
 package utils;
 
-import pages.AddEmployeePage;
-import pages.ContactDetailsPage;
-import pages.DashboardPage;
-import pages.AdminLoginPage;
+import pages.*;
 
 public class PageInitializer {
 
@@ -24,6 +21,7 @@ public class PageInitializer {
         loginPage = new AdminLoginPage();
         contactDetailsPage= new ContactDetailsPage();
 
+        EmployeeListPage employeeListPage = new EmployeeListPage();
 
     }
 

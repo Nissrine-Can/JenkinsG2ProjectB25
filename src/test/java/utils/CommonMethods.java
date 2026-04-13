@@ -85,9 +85,20 @@ public class CommonMethods extends PageInitializer{
         return  wait;
     }
 
+    public static WebElement waitForVisibility(WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        return wait.until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public static WebElement waitForVisibility(By locator) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
     public void waitForElementToBeClickAble(WebElement element){
         getwait().until(ExpectedConditions.elementToBeClickable(element));
     }
+
 
     public void click(WebElement element){
         waitForElementToBeClickAble(element);
