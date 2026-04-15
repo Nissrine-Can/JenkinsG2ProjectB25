@@ -5,7 +5,7 @@ Feature: Verify ESS user can upload profile pic
     Then user is able to login successfully
     And the user navigates to "MY info" page
 
-  @regression1 @Prachi
+  @regression1
   Scenario: Upload valid profile picture
     When the user clicks on "Choose Profile Picture"
     And the user selects a valid image file "employee-image"
@@ -13,8 +13,8 @@ Feature: Verify ESS user can upload profile pic
     Then the profile picture should be uploaded successfully
     And the uploaded image should be displayed on the profile.
 
-  @Prachi
-  Scenario: Upload invalid file type
+  @prachi
+  Scenario: Upload invalid profile picture
     When the user selects a file "document.pdf"
     And the user clicks on "Save"
-    Then an error message "Attachment exceeded size" should be displayed.
+    Then an error message "File type not allowed" should be displayed.

@@ -2,124 +2,141 @@ package steps;
 
 import io.cucumber.java.PendingException;
 import io.cucumber.java.en.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.junit.Assert;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import pages.MyInfoPage;
 import utils.CommonMethods;
-import utils.Constants;
-import utils.ExcelReader;
 
-import java.awt.*;
-import java.time.Duration;
+import static pages.MyInfoPage.getErrorMessage;
 
 public class stepUploadPic extends CommonMethods {
 
-    @And("the user navigates to {string} page")
-    public void user_navigates_to_page(String pageName) {
+    // WebDriver driver = DriverFactory.getDriver();
+    MyInfoPage myInfoPage = new MyInfoPage(driver);
 
-        if(pageName.equalsIgnoreCase("MY info")) {
-            driver.get("https://www.syntaxhrm.com/web/index.php/pim/viewPersonalDetails/empNumber/1");
-        }
+    @Given("the user navigates to {string} page")
+    public void navigate_to_my_info(String page) {
+        driver.get("https://www.syntaxhrm.com/web/index.php/pim/viewPhotograph/empNumber/1");
     }
 
     @When("the user clicks on {string}")
-    public void user_clicks_on_button(String buttonName) {
-
-        if(buttonName.equalsIgnoreCase("Choose Profile Picture")) {
-
-            WebElement chooseBtn = driver.findElement(
-                    By.xpath("//img[@class='employee-image']")); // real input element//
-
-            // No need to click actually, but keeping for step consistency
-            chooseBtn.click();
-        }
+    public void click_choose_profile_picture(String button) throws InterruptedException {
+        Thread.sleep(3000);
+        myInfoPage.clickProfileImage();
 
     }
-    @And("the user selects a valid image file {string}")
-    public void user_selects_valid_image(String fileName) throws InterruptedException {
 
-        //WebElement upload = driver.findElement(By.xpath("//img[@src='/web/index.php/pim/viewPhoto/empNumber/1']"));
-        String filePath = System.getProperty("user.dir") + "/src/test/resources/testdata/" + "employee-image" + ".jpg";
-        Thread.sleep(5000);
-        WebElement uploadInput = driver.findElement(By.xpath("//i[@class='oxd-icon bi-plus']"));
-        uploadInput.click();
-        Thread.sleep(5000);
-        driver.findElement(By.xpath("//script[@type='text/javascript']")).sendKeys("/src/test/resources/testdata/employee-image.jpg");
-
-
+    @When("the user selects a valid image file {string}")
+    public void upload_valid_image(String fileName) {
+        myInfoPage.uploadFile(fileName);
+//        String path = System.getProperty("user.dir") + "/testdata/" + fileName;
+//        myInfoPage.uploadFile("C:\\Users\18479\\OneDrive\\Desktop\\Prachi final project code\testdata\\employee-image.jpg");
     }
-   /* @And("the user clicks on {string}")
-    public void user_clicks_on_save(String buttonName) {
 
-        if(buttonName.equalsIgnoreCase("Save")) {
 
-            WebElement saveBtn = driver.findElement(
-                    By.xpath("//button[@type='submit']")
-            );
 
-            saveBtn.click();
-        }
-    }*/
+
+
+    //@When("the user clicks on \"Save\"")
+    //public void click_save() {
+    // myInfoPage.clickSave();
+    // }
 
     @Then("the profile picture should be uploaded successfully")
-    public void verify_upload_success() {
+    public void verify_success_upload() throws InterruptedException {
+        // Click Save
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        // Wait (better: use WebDriverWait)
+        Thread.sleep(2000);
 
-        WebElement successMsg = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class,'message success')]")));
+// Validate message
 
-        System.out.println("Upload Successful: " + successMsg.getText());
+        WebElement msg = driver.findElement(By.xpath("//div[contains(@class,'oxd-toast--success')]"));
+        String text = msg.getText();
+
+        Assert.assertTrue("Success message not displayed",
+                text.contains("Successfully Updated"));
+        //Assert.assertTrue(msg.isDisplayed());
+        // Assert.assertTrue(msg.getText().contains("Successfully updated"));
+
+
+        //String actualText = myInfoPage.getSuccessMessage();
+        //Assert.assertTrue(message.contains("Success /n successfully updated"));
+        //Assert.assertTrue(actualText.replace("\n"," ")
+        //.contains("Successfully updated"));
     }
 
-    @And("the uploaded image should be displayed on the profile.")
-    public void verify_uploaded_image_displayed() {
-
-        WebElement profileImage = driver.findElement(
-                By.xpath("//img[contains(@src,'viewPhoto')]")
-        );
-
-        if(profileImage.isDisplayed()) {
-            System.out.println("Profile image displayed successfully");
-        } else {
-            throw new AssertionError("Profile image not displayed");
-        }
+    @Then("the uploaded image should be displayed")
+    public void verify_image_displayed() {
+        Assert.assertTrue(myInfoPage.isProfileImageDisplayed());
     }
+
 
     @When("the user selects a file {string}")
-    public void user_selects_invalid_file(String fileName) {
-
-        WebElement upload = driver.findElement(By.xpath("//img[@src='/web/index.php/pim/viewPhoto/empNumber/1']"));
-
-
-        String filePath = "C:\\Users\\18479\\OneDrive\\Desktop" + fileName + ".pdf";
-        // example: document.pdf
-
-        upload.sendKeys(filePath);
+    public void upload_invalid_file(String fileName) {
+        String path = System.getProperty("user.dir") + "/testdata/" + fileName;
+        myInfoPage.uploadFile("document.pdf");
     }
+    //@When("the user clicks on \"Save\"")
+    //public void click_save() {
+    // MyInfoPage.clickSave();
+    // }
+
     @Then("an error message {string} should be displayed")
-    public void verify_error_message(String expectedMessage) {
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-        WebElement errorMsg = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("<span data-v-7b563373=\"\" data-v-957b4417=\"\" class=\"oxd-text oxd-text--span oxd-input-field-error-message oxd-input-group__message\">Attachment Size Exceeded</span>")));
-
-        String actualMessage = errorMsg.getText().trim();
-
-        if(!actualMessage.contains(expectedMessage)) {
-            throw new AssertionError("Expected: " + expectedMessage +
-                    " but got: " + actualMessage);
-        }
-
-        System.out.println("Error message verified: " + actualMessage);
+    public void an_error_message_should_be_displayed(String expectedMsg) throws InterruptedException {
+        Thread.sleep(2000);
+        String actualMsg = MyInfoPage.getErrorMessage();
+        Assert.assertEquals(actualMsg, "Error message mismatch!", expectedMsg);
     }
 
 
+    /*@Then("an error message {string} should be displayed")
+    public void anErrorMessageShouldBeDisplayed(String string)  {
+        String actualMessage = getErrorMessage();
+
+        System.out.println("Actual Message: " + actualMessage);
+
+        // Recommended (flexible assertion)
+        CharSequence expectedMessage = "File type not allowed";
+        Assert.assertTrue("Expected: " + expectedMessage + " but got: " + actualMessage,
+                actualMessage.contains(expectedMessage));
+    }*/
+
+    @And("the uploaded image should be displayed on the profile.")
+    public void theUploadedImageShouldBeDisplayedOnTheProfile() throws InterruptedException {
+        Assert.assertTrue(myInfoPage.isProfileImageDisplayed());
+        Thread.sleep(2000);
+
+    }
+
+
+
+    //@Then("an error message {string} should be displayed.")
+    //public void anErrorMessageShouldBeDisplayed(String arg0) {
+    // Write code here that turns the phrase above into concrete actions
+    //throw new PendingException();
+    //}
+    /*@Then("an error message {string} should be displayed.")
+    public void an_error_message_should_be_displayed(String string) {
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
+    }*/
+   /* @And("the uploaded image should be displayed on the profile.")
+    public void theUploadedImageShouldBeDisplayedOnTheProfile() throws InterruptedException {
+        Assert.assertTrue(myInfoPage.isProfileImageDisplayed());
+        Thread.sleep(2000);
+    }*/
+    /*@When("an error message {string} should be displayed.")
+    public void an_error_message_should_be_displayed(String string) throws InterruptedException {
+        String actual = myInfoPage.getErrorMessage();
+        long expected = 0;
+        Assert.assertEquals(expected, actual);
+
+        throw new io.cucumber.java.PendingException();
+    }*/
 
 }
+
+
