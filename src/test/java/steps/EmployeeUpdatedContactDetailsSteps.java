@@ -1,16 +1,13 @@
 package steps;
 
-import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import pages.ContactDetailsPage;
 import utils.CommonMethods;
 import utils.ConfigReader;
 import utils.DBUtils;
@@ -33,13 +30,15 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
     String WorkEmailFE;
     String OtherEmailFE;
 
+
     @Given("the employee is logged into the HRMS application using valid ESS user credentials")
     public void the_employee_is_logged_into_the_hrms_application_using_valid_ess_user_credentials() {
-        driver.get("https://www.syntaxhrm.com/web/index.php/auth/login");
+        //  driver.get("https://www.syntaxhrm.com/web/index.php/auth/login");
+        openBrowserAndLaunchApplication();
         sendText(ConfigReader.read("essUser"), loginPage.usernameField);
         sendText(ConfigReader.read("essPassword"), loginPage.passwordField);
-//        sendText("arundhati123", loginPage.usernameField);
-//        sendText("Arundhati@22", loginPage.passwordField);
+        // sendText("arundhati123", loginPage.usernameField);
+        //  sendText("Arundhati@22", loginPage.passwordField);
         click(loginPage.loginButton);
         System.out.println("welcome screen displayed: Arundhati Sahoo");
         String actualText = dashboardPage.welcomeScreenLoc.getText();
@@ -55,8 +54,10 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
     }
 
     @Then("the employee should see editable fields for contact information:")
-    public void the_employee_should_see_editable_fields_for_contact_information(DataTable dataTable) {
+    public void the_employee_should_see_editable_fields_for_contact_information(io.cucumber.datatable.DataTable dataTable) {
 
+        Assert.assertTrue(contactDetailsPage.street1Field.isDisplayed());
+        Assert.assertTrue(contactDetailsPage.street2Field.isDisplayed());
         Assert.assertTrue(contactDetailsPage.cityField.isDisplayed());
         Assert.assertTrue(contactDetailsPage.stateField.isDisplayed());
         Assert.assertTrue(contactDetailsPage.zipField.isDisplayed());
@@ -69,21 +70,27 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
     }
 
     @When("the employee updates the following contact details:")
-    public void the_employee_updates_the_following_contact_details(DataTable dataTable) throws InterruptedException {
+    public void the_employee_updates_the_following_contact_details(io.cucumber.datatable.DataTable dataTable) throws InterruptedException {
         var data = dataTable.asMap();
-        Thread.sleep(2000);
+        waitForVisibility(contactDetailsPage.street1Field);
+        // Thread.sleep(2000);
         sendText((data.get("Street 1")), contactDetailsPage.street1Field);
-        Thread.sleep(2000);
+        // Thread.sleep(2000);
+        waitForVisibility(contactDetailsPage.street2Field);
         sendText((data.get("Street 2")), contactDetailsPage.street2Field);
+        waitForVisibility(contactDetailsPage.cityField);
         sendText((data.get("City")), contactDetailsPage.cityField);
+        waitForVisibility(contactDetailsPage.stateField);
         sendText((data.get("State")), contactDetailsPage.stateField);
-        Thread.sleep(2000);
+        // Thread.sleep(2000);
+        waitForVisibility(contactDetailsPage.zipField);
         contactDetailsPage.zipField.clear();
         sendText((data.get("Zip Code")), contactDetailsPage.zipField);
         // selectFromDropDown( contactDetailsPage.countryField,(data.get("Country")));
         // new Select(driver.findElement(By.xpath("//*[@class='oxd-select-text oxd-select-text--active']"))).selectByVisibleText(data.get("Country"));
         // sendText((data.get("Country")), contactDetailsPage.countryField);
         // driver.findElement(By.xpath("//*[@class='oxd-select-text oxd-select-text--active']")).click();
+
         contactDetailsPage.countryDField.click();
 
         List<WebElement> options = driver.findElements(By.xpath("//div[@class='oxd-select-text-input']"));
@@ -94,10 +101,15 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
             }
         }
         // driver.findElement(By.xpath("//*[text()='United States']")).click();
+        waitForVisibility(contactDetailsPage.homeTField);
         sendText((data.get("Home Phone")), contactDetailsPage.homeTField);
+        waitForVisibility(contactDetailsPage.mobileField);
         sendText((data.get("Mobile Phone")), contactDetailsPage.mobileField);
+        waitForVisibility(contactDetailsPage.workField);
         sendText((data.get("Work Phone")), contactDetailsPage.workField);
+        waitForVisibility(contactDetailsPage.workEmailField);
         sendText((data.get("Work Email")), contactDetailsPage.workEmailField);
+        waitForVisibility(contactDetailsPage.otherEmailField);
         sendText((data.get("Other Email")), contactDetailsPage.otherEmailField);
 
         Street1FE = (data.get("Street 1"));
@@ -116,25 +128,16 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
 
     @When("clicks on the {string} button")
     public void clicks_on_the_button(String string) throws InterruptedException {
+        // waitForElementToBeClickAble(contactDetailsPage.saveButton);
         click(contactDetailsPage.saveButton);
         Thread.sleep(2000);
     }
 
     @Then("a success message should be displayed")
-    public void a_success_message_should_be_displayed() throws InterruptedException {
+    public void a_success_message_should_be_displayed() {
         System.out.println("Success message displayed");
-
-        Thread.sleep(1000);
-
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class,'oxd-toast')]")) );
-       String message = toast.getText();
-       System.out.println("Toast message: " + message);
-
-        Assert.assertTrue(message.contains("Success"));
-
-
-
+        WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".oxd-toast-container")));
         //driver.findElement(By.cssSelector(".oxd-toast-container"));
         String actualMessage = toast.getText();
         // String expectedMessage = "Success\nSuccessfully Updated\n";
@@ -159,8 +162,8 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
 
     @When("logs back in")
     public void logs_back_in() throws InterruptedException {
-        sendText("arundhati123", loginPage.usernameField);
-        sendText("Arundhati@22", loginPage.passwordField);
+        sendText(ConfigReader.read("essUser"), loginPage.usernameField);
+        sendText(ConfigReader.read("essPassword"), loginPage.passwordField);
         click(loginPage.loginButton);
     }
 
@@ -169,16 +172,16 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
         click(dashboardPage.myInfoField);
         waitForElementToBeClickAble(dashboardPage.contactDetailsField);
         click(dashboardPage.contactDetailsField);
+
         Thread.sleep(2000);
     }
 
     @Then("the previously updated contact details should be displayed")
-    public void the_previously_updated_contact_details_should_be_displayed() throws InterruptedException {
+    public void the_previously_updated_contact_details_should_be_displayed() {
         //  Assert.assertEquals("UpdatedCity", contactDetailsPage.getCity());
         System.out.println("the previously updated contact details should be displayed");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-        //Thread.sleep(1000);
+     /*
         Assert.assertEquals("272",contactDetailsPage.street1Field.getAttribute("value"));
         Assert.assertEquals("SteepleChase dr",contactDetailsPage.street2Field.getAttribute("value"));
         Assert.assertEquals("Exton",contactDetailsPage.cityField.getAttribute("value"));
@@ -187,15 +190,34 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
         String oldText = contactDetailsPage.countryDField.getText();
         System.out.println(oldText);
         wait.until(ExpectedConditions.textToBePresentInElement(contactDetailsPage.countryDField, oldText));
-
         String newText = contactDetailsPage.countryDField.getText();
         Assert.assertNotEquals(oldText, "Dropdown text did not change", newText);
-        // Assert.assertEquals("United States",contactDetailsPage.homeTField.getText());
+       // Assert.assertEquals("United States",contactDetailsPage.homeTField.getText());
         Assert.assertEquals("1234556788",contactDetailsPage.homeTField.getAttribute("value"));
         Assert.assertEquals("3456723455",contactDetailsPage.mobileField.getAttribute("value"));
         Assert.assertEquals("6789023456",contactDetailsPage.workField.getAttribute("value"));
         Assert.assertEquals("arundhati@gmail.com",contactDetailsPage.workEmailField.getAttribute("value"));
         Assert.assertEquals("arundhatiwork@gmail.com",contactDetailsPage.otherEmailField.getAttribute("value"));
+*/
+
+        Assert.assertEquals(Street1FE,contactDetailsPage.street1Field.getAttribute("value"));
+        Assert.assertEquals(Street2FE,contactDetailsPage.street2Field.getAttribute("value"));
+        Assert.assertEquals(CityFE,contactDetailsPage.cityField.getAttribute("value"));
+        Assert.assertEquals(StateFE,contactDetailsPage.stateField.getAttribute("value"));
+        Assert.assertEquals(ZipFE,contactDetailsPage.zipField.getAttribute("value"));
+        String oldText = contactDetailsPage.countryDField.getText();
+        System.out.println(oldText);
+        wait.until(ExpectedConditions.textToBePresentInElement(contactDetailsPage.countryDField, oldText));
+        String newText = contactDetailsPage.countryDField.getText();
+        Assert.assertNotEquals(oldText, "Dropdown text did not change", newText);
+        // Assert.assertEquals("United States",contactDetailsPage.homeTField.getText());
+        Assert.assertEquals(HomeFE,contactDetailsPage.homeTField.getAttribute("value"));
+        Assert.assertEquals(MobileFE,contactDetailsPage.mobileField.getAttribute("value"));
+        Assert.assertEquals(WorkFE,contactDetailsPage.workField.getAttribute("value"));
+        Assert.assertEquals(WorkEmailFE,contactDetailsPage.workEmailField.getAttribute("value"));
+        Assert.assertEquals(OtherEmailFE,contactDetailsPage.otherEmailField.getAttribute("value"));
+
+
         //Database testing for validation
         String query = "select * from hs_hr_employee where emp_firstname ='Arundhati' and emp_lastname='Sahoo' and employee_id ='ABC'";
 
@@ -235,9 +257,9 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
     @Then("the system should display an email format validation error")
     public void the_system_should_display_an_email_format_validation_error() throws InterruptedException {
         // WebElement emailErrorMsg = driver.findElement(By.xpath("//*[text()='Expected format: admin@example.com']"));
-        String emailErrText = ContactDetailsPage.emailErrorMsg.getText();
-        // Assert.assertTrue(emailErrText.contains("@"));
+        String emailErrText = contactDetailsPage.emailErrorMsg.getText();
         Thread.sleep(1000);
+        // Assert.assertTrue(emailErrText.contains("@"));
         Assert.assertEquals("Expected format: admin@example.com",emailErrText);
         // Assert.assertTrue("Expected format: admin@example.com",contactDetailsPage.emailErrorMsg.isDisplayed());
     }
@@ -245,13 +267,12 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
     @When("the employee enters an invalid phone number in {string} or {string} or {string}")
     public void the_employee_enters_an_invalid_phone_number_in_or_or(String hp, String mp, String wp) {
         sendText(hp, contactDetailsPage.homeTField);
-        sendText(wp, contactDetailsPage.workField);
+        sendText(mp, contactDetailsPage.mobileField);
         sendText(wp, contactDetailsPage.workField);
     }
 
     @Then("the system should display an phone number validation error")
-    public void the_system_should_display_an_phone_number_validation_error() throws InterruptedException {
-        Thread.sleep(1000);
+    public void the_system_should_display_an_phone_number_validation_error() {
         // WebElement phoneErMsg= driver.findElement(By.xpath("//span[text()='Allows numbers and only + - / ( )']"));
         String phoneErrText = contactDetailsPage.phoneErMsg.getText();
         Assert.assertEquals("Allows numbers and only + - / ( )",phoneErrText);
