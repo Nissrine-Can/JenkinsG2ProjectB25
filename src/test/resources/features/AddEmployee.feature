@@ -13,13 +13,13 @@ Feature: Add employee scenarios
     When user clicks on PIM option
     And user clicks on add employee option
 
-  @add @Nissrine
+  @add @nissrine
   Scenario: Adding employee
     When user enters employee first name and last name
     And user clicks on save button
     Then user is able to see employee added successfully
 
-  @param @db @regression @Nissrine
+  @param @db @regression @nissrine
   Scenario: Adding employee using parameters
     When user enters employee "Nissrine" and "Canina" values
     And user clicks on save button
@@ -30,7 +30,7 @@ Feature: Add employee scenarios
 
 
 
-  @examples @regression @Nissrine
+  @examples @regression @nissrine
   Scenario Outline:  Adding multiple employees
     When user enters employee value "<firstname>" and "<lastname>" and "<middlename>"
     And user clicks on save button
@@ -42,7 +42,7 @@ Feature: Add employee scenarios
       | hamit     | ahmed    | ms         |
 
 
-  @datatable  @regression @Nissrine
+  @datatable  @regression @nissrine
   Scenario: Adding employees using data table
     When user enters employee value for firstname , mmiddlename and lastname and save the employees
       | firstname | lastname | middlename |
@@ -51,6 +51,6 @@ Feature: Add employee scenarios
       | Rayan     | ahmed    |     ms     |
 
 
-  @excel @regression @sprint1 @Nissrine
+  @excel @regression @sprint1 @nissrine
   Scenario: Adding employees using excel file
     When user enters employee value for firstname , middlename and lastname using excel file and save the employees
