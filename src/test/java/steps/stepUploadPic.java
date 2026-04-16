@@ -29,12 +29,10 @@ public class stepUploadPic extends CommonMethods {
 
     @When("the user selects a valid image file {string}")
     public void upload_valid_image(String fileName) {
+        //String path = System.getProperty("user.dir") + "/src/test/resources/testdata/" + fileName;
+        //myInfoPage.uploadFile("C:\\Users\18479\\OneDrive\\Desktop\\Prachi final project code\testdata\\employee-image.jpg");
         myInfoPage.uploadFile(fileName);
-//        String path = System.getProperty("user.dir") + "/testdata/" + fileName;
-//        myInfoPage.uploadFile("C:\\Users\18479\\OneDrive\\Desktop\\Prachi final project code\testdata\\employee-image.jpg");
     }
-
-
 
 
 
@@ -76,8 +74,8 @@ public class stepUploadPic extends CommonMethods {
 
     @When("the user selects a file {string}")
     public void upload_invalid_file(String fileName) {
-        String path = System.getProperty("user.dir") + "/testdata/" + fileName;
-        myInfoPage.uploadFile("document.pdf");
+        //String path = System.getProperty("user.dir") + "/testdata/" + fileName;
+        myInfoPage.uploadFile(fileName);
     }
     //@When("the user clicks on \"Save\"")
     //public void click_save() {
@@ -85,9 +83,9 @@ public class stepUploadPic extends CommonMethods {
     // }
 
     @Then("an error message {string} should be displayed")
-    public void an_error_message_should_be_displayed(String expectedMsg) throws InterruptedException {
+    public void anerrormessageshouldbedisplayed(String expectedMsg) throws InterruptedException {
         Thread.sleep(2000);
-        String actualMsg = MyInfoPage.getErrorMessage();
+        String actualMsg = getErrorMessage();
         Assert.assertEquals(actualMsg, "Error message mismatch!", expectedMsg);
     }
 
@@ -118,11 +116,15 @@ public class stepUploadPic extends CommonMethods {
     // Write code here that turns the phrase above into concrete actions
     //throw new PendingException();
     //}
-    /*@Then("an error message {string} should be displayed.")
-    public void an_error_message_should_be_displayed(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
-    }*/
+    @Then("an error message {string} should be displayed.")
+    public void an_error_message_should_be_displayed(String string) throws InterruptedException {
+        Thread.sleep(2000);
+        String actualMsg = getErrorMessage();
+        Thread.sleep(2000);
+        String expectedMsg = new String("File type not allowed");
+        Assert.assertEquals(actualMsg, "File type not allowed", expectedMsg);
+
+    }
    /* @And("the uploaded image should be displayed on the profile.")
     public void theUploadedImageShouldBeDisplayedOnTheProfile() throws InterruptedException {
         Assert.assertTrue(myInfoPage.isProfileImageDisplayed());
@@ -138,5 +140,3 @@ public class stepUploadPic extends CommonMethods {
     }*/
 
 }
-
-

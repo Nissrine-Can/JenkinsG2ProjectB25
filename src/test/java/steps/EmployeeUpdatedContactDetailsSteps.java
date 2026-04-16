@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.ContactDetailsPage;
 import utils.CommonMethods;
+import utils.ConfigReader;
 import utils.DBUtils;
 
 import java.time.Duration;
@@ -35,8 +36,10 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
     @Given("the employee is logged into the HRMS application using valid ESS user credentials")
     public void the_employee_is_logged_into_the_hrms_application_using_valid_ess_user_credentials() {
         driver.get("https://www.syntaxhrm.com/web/index.php/auth/login");
-        sendText("arundhati123", loginPage.usernameField);
-        sendText("Arundhati@22", loginPage.passwordField);
+        sendText(ConfigReader.read("essUser"), loginPage.usernameField);
+        sendText(ConfigReader.read("essPassword"), loginPage.passwordField);
+//        sendText("arundhati123", loginPage.usernameField);
+//        sendText("Arundhati@22", loginPage.passwordField);
         click(loginPage.loginButton);
         System.out.println("welcome screen displayed: Arundhati Sahoo");
         String actualText = dashboardPage.welcomeScreenLoc.getText();

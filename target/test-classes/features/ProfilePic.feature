@@ -5,10 +5,10 @@ Feature: Verify ESS user can upload profile pic
     Then user is able to login successfully
     And the user navigates to "MY info" page
 
-  @regression1
+  @regression1 @prachi
   Scenario: Upload valid profile picture
     When the user clicks on "Choose Profile Picture"
-    And the user selects a valid image file "employee-image"
+    And the user selects a valid image file "employee-image.jpg"
     And the user clicks on "Save"
     Then the profile picture should be uploaded successfully
     And the uploaded image should be displayed on the profile.

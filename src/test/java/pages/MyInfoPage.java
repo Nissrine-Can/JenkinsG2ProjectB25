@@ -47,7 +47,7 @@ public class MyInfoPage {
     public void uploadFile(String fileName) {
 
         String filePath = System.getProperty("user.dir")
-                + "\\src\\test\\resources\\testdata\\"
+                + "/src/test/resources/testdata/"
                 + fileName;
 
         driver.findElement(By.xpath("//input[@type='file']")).sendKeys(filePath);
