@@ -34,7 +34,8 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
     @Given("the employee is logged into the HRMS application using valid ESS user credentials")
     public void the_employee_is_logged_into_the_hrms_application_using_valid_ess_user_credentials() {
         //  driver.get("https://www.syntaxhrm.com/web/index.php/auth/login");
-        openBrowserAndLaunchApplication();
+        driver.get(ConfigReader.read("url"));
+        // openBrowserAndLaunchApplication();
         sendText(ConfigReader.read("essUser"), loginPage.usernameField);
         sendText(ConfigReader.read("essPassword"), loginPage.passwordField);
         // sendText("arundhati123", loginPage.usernameField);
@@ -250,17 +251,28 @@ public class EmployeeUpdatedContactDetailsSteps extends CommonMethods {
 
     @When("the employee enters an invalid email format in {string} or {string}")
     public void the_employee_enters_an_invalid_email_format_in_or(String we, String oe) {
-        sendText(we, contactDetailsPage.workEmailField);
-        sendText(oe, contactDetailsPage.otherEmailField);
+        waitForVisibility(contactDetailsPage.workEmailField);
+        sendText(we,contactDetailsPage.workEmailField);
+        waitForVisibility(contactDetailsPage.otherEmailField);
+        sendText(oe,contactDetailsPage.otherEmailField);
     }
 
     @Then("the system should display an email format validation error")
     public void the_system_should_display_an_email_format_validation_error() throws InterruptedException {
         // WebElement emailErrorMsg = driver.findElement(By.xpath("//*[text()='Expected format: admin@example.com']"));
+        // wait until error message is visible
+
+        //  WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        // wait.until(ExpectedConditions.textToBePresentInElement(contactDetailsPage.emailErrorMsg,"Expected format"));
+        waitForVisibility(contactDetailsPage.emailErrorMsg);
+        // now safely get text
         String emailErrText = contactDetailsPage.emailErrorMsg.getText();
-        Thread.sleep(1000);
+        Assert.assertEquals("Expected format: admin@example.com", emailErrText);
+
+        // String emailErrText = contactDetailsPage.emailErrorMsg.getText();
+        // Thread.sleep(1000);
         // Assert.assertTrue(emailErrText.contains("@"));
-        Assert.assertEquals("Expected format: admin@example.com",emailErrText);
+        //  Assert.assertEquals("Expected format: admin@example.com",emailErrText);
         // Assert.assertTrue("Expected format: admin@example.com",contactDetailsPage.emailErrorMsg.isDisplayed());
     }
 

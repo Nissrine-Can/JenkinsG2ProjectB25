@@ -47,7 +47,7 @@ Feature: Update Employee Contact Details
   @invalidEmail @dbTesting @arundhati
   Scenario: Validate email format
     When the employee enters an invalid email format in "Work Email" or "Other Email"
-    And clicks on the "Save" button
+   # And clicks on the "Save" button
     Then the system should display an email format validation error
 
   @dbTesting @arundhati
