@@ -12,7 +12,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="GroupProject" options="--add-modules jdk.incubator.foreign" />
+      <module name="GroupProject" options="" />
     </option>
   </component>
 </project>
